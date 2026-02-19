@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MartinTech TV - Panel de Acceso</title>
+    <title>MartinTech TV - Panel Único</title>
     <style>
         body { 
             background-color: #0b0f19; 
             color: white; 
             font-family: 'Segoe UI', Arial, sans-serif; 
             text-align: center; 
-            padding-top: 8vh; 
+            padding-top: 10vh; 
             margin: 0; 
         }
+        /* Solo una tarjeta central */
         .card { 
             background: #161b22; 
             padding: 30px; 
@@ -23,43 +24,24 @@
             max-width: 420px; 
             box-shadow: 0 10px 50px rgba(0,0,0,0.8); 
         }
-        h1 { color: #58a6ff; font-size: 28px; margin-bottom: 5px; text-transform: uppercase; }
+        h1 { color: #58a6ff; font-size: 26px; margin-bottom: 5px; text-transform: uppercase; }
         .status { color: #8b949e; font-size: 14px; margin-bottom: 25px; }
         
         input { 
-            font-size: 32px; 
-            width: 80%; 
-            padding: 12px; 
-            text-align: center; 
-            border-radius: 12px; 
-            border: 2px solid #30363d; 
-            background: #0d1117; 
-            color: white; 
-            margin-bottom: 20px; 
-            outline: none; 
+            font-size: 32px; width: 80%; padding: 12px; text-align: center; 
+            border-radius: 12px; border: 2px solid #30363d; background: #0d1117; 
+            color: white; margin-bottom: 20px; outline: none; 
         }
         .btn-validar { 
-            background: #238636; 
-            color: white; 
-            padding: 18px; 
-            border: none; 
-            border-radius: 12px; 
-            font-weight: bold; 
-            font-size: 20px; 
-            cursor: pointer; 
-            width: 88%; 
+            background: #238636; color: white; padding: 18px; border: none; 
+            border-radius: 12px; font-weight: bold; font-size: 20px; 
+            cursor: pointer; width: 88%; 
         }
 
         #downloadArea { display: none; margin-top: 25px; border-top: 1px solid #30363d; padding-top: 25px; }
         .btn-link { 
-            color: white; 
-            text-decoration: none; 
-            padding: 20px; 
-            display: block; 
-            border-radius: 15px; 
-            font-weight: bold; 
-            font-size: 18px; 
-            margin-bottom: 15px; 
+            color: white; text-decoration: none; padding: 18px; display: block; 
+            border-radius: 15px; font-weight: bold; font-size: 18px; margin-bottom: 15px; 
         }
         .pelis { background-color: #e11d48; } 
         .tv-futbol { background-color: #2563eb; } 
@@ -81,14 +63,11 @@
 
         <div id="downloadArea">
             <p style="color: #3fb950; font-weight: bold; margin-bottom: 20px;">✅ ACCESO CONCEDIDO</p>
-            
             <a href="https://movieplus-apk.com/MoviePlus10TVs.apk" class="btn-link pelis">🎬 MOVIE PLUS (Peliculas)</a>
             <a href="https://bit.ly/tele-latino-tv" class="btn-link tv-futbol">⚽ TELE LATINO (TV y Fútbol)</a>
         </div>
 
-        <div class="footer">
-            Soporte: 11 6968 9385
-        </div>
+        <div class="footer">Soporte: 11 6968 9385</div>
     </div>
 
     <script>
@@ -96,6 +75,7 @@
             const btn = document.getElementById("btnValidar");
             const pinUsuario = document.getElementById("pinInput").value;
             if(!pinUsuario) { alert("Ingresá el PIN."); return; }
+            
             btn.innerText = "VERIFICANDO...";
             btn.disabled = true;
 
@@ -104,10 +84,15 @@
 
             try {
                 const response = await fetch(proxyUrl);
-                const data = await response.text();
-                if (pinUsuario.trim() === data.trim()) {
+                const text = await response.text();
+                
+                // Convertimos el texto del Pastebin en una lista de códigos
+                const codigosValidos = text.split('\n').map(c => c.trim());
+
+                if (codigosValidos.includes(pinUsuario.trim())) {
                     document.getElementById("downloadArea").style.display = "block";
                     document.getElementById("loginArea").style.display = "none";
+                    document.getElementById("status").innerText = "Sesión validada";
                 } else {
                     alert("PIN incorrecto.");
                     btn.innerText = "INGRESAR";
@@ -115,250 +100,7 @@
                 }
             } catch (error) {
                 alert("Error de conexión.");
-                btn.disabled = false;
-            }
-        }
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MartinTech TV - Panel de Acceso</title>
-    <style>
-        body { 
-            background-color: #0b0f19; 
-            color: white; 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            text-align: center; 
-            padding-top: 8vh; 
-            margin: 0; 
-        }
-        .card { 
-            background: #161b22; 
-            padding: 30px; 
-            border-radius: 25px; 
-            display: inline-block; 
-            border: 2px solid #58a6ff; 
-            width: 90%; 
-            max-width: 420px; 
-            box-shadow: 0 10px 50px rgba(0,0,0,0.8); 
-        }
-        h1 { color: #58a6ff; font-size: 28px; margin-bottom: 5px; text-transform: uppercase; }
-        .status { color: #8b949e; font-size: 14px; margin-bottom: 25px; }
-        
-        input { 
-            font-size: 32px; 
-            width: 80%; 
-            padding: 12px; 
-            text-align: center; 
-            border-radius: 12px; 
-            border: 2px solid #30363d; 
-            background: #0d1117; 
-            color: white; 
-            margin-bottom: 20px; 
-            outline: none; 
-        }
-        .btn-validar { 
-            background: #238636; 
-            color: white; 
-            padding: 18px; 
-            border: none; 
-            border-radius: 12px; 
-            font-weight: bold; 
-            font-size: 20px; 
-            cursor: pointer; 
-            width: 88%; 
-        }
-
-        #downloadArea { display: none; margin-top: 25px; border-top: 1px solid #30363d; padding-top: 25px; }
-        .btn-link { 
-            color: white; 
-            text-decoration: none; 
-            padding: 20px; 
-            display: block; 
-            border-radius: 15px; 
-            font-weight: bold; 
-            font-size: 18px; 
-            margin-bottom: 15px; 
-        }
-        .pelis { background-color: #e11d48; } 
-        .tv-futbol { background-color: #2563eb; } 
-        
-        .footer { margin-top: 25px; color: #8b949e; font-size: 13px; }
-    </style>
-</head>
-<body>
-
-    <div class="card">
-        <h1>MARTINTECH TV</h1>
-        <div class="status" id="status">Panel de Control - Benavidez</div>
-        
-        <div id="loginArea">
-            <input type="number" id="pinInput" placeholder="PIN" pattern="\d*">
-            <br>
-            <button class="btn-validar" id="btnValidar" onclick="validarAcceso()">INGRESAR</button>
-        </div>
-
-        <div id="downloadArea">
-            <p style="color: #3fb950; font-weight: bold; margin-bottom: 20px;">✅ ACCESO CONCEDIDO</p>
-            
-            <a href="https://movieplus-apk.com/MoviePlus10TVs.apk" class="btn-link pelis">🎬 MOVIE PLUS (Peliculas)</a>
-            <a href="https://bit.ly/tele-latino-tv" class="btn-link tv-futbol">⚽ TELE LATINO (TV y Fútbol)</a>
-        </div>
-
-        <div class="footer">
-            Soporte: 11 6968 9385
-        </div>
-    </div>
-
-    <script>
-        async function validarAcceso() {
-            const btn = document.getElementById("btnValidar");
-            const pinUsuario = document.getElementById("pinInput").value;
-            if(!pinUsuario) { alert("Ingresá el PIN."); return; }
-            btn.innerText = "VERIFICANDO...";
-            btn.disabled = true;
-
-            const urlRaw = "https://pastebin.com/raw/KEmQ0NjJ";
-            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(urlRaw + '?t=' + Date.now())}`;
-
-            try {
-                const response = await fetch(proxyUrl);
-                const data = await response.text();
-                if (pinUsuario.trim() === data.trim()) {
-                    document.getElementById("downloadArea").style.display = "block";
-                    document.getElementById("loginArea").style.display = "none";
-                } else {
-                    alert("PIN incorrecto.");
-                    btn.innerText = "INGRESAR";
-                    btn.disabled = false;
-                }
-            } catch (error) {
-                alert("Error de conexión.");
-                btn.disabled = false;
-            }
-        }
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MartinTech TV - Panel de Acceso</title>
-    <style>
-        body { 
-            background-color: #0b0f19; 
-            color: white; 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            text-align: center; 
-            padding-top: 8vh; 
-            margin: 0; 
-        }
-        .card { 
-            background: #161b22; 
-            padding: 30px; 
-            border-radius: 25px; 
-            display: inline-block; 
-            border: 2px solid #58a6ff; 
-            width: 90%; 
-            max-width: 420px; 
-            box-shadow: 0 10px 50px rgba(0,0,0,0.8); 
-        }
-        h1 { color: #58a6ff; font-size: 28px; margin-bottom: 5px; text-transform: uppercase; }
-        .status { color: #8b949e; font-size: 14px; margin-bottom: 25px; }
-        
-        input { 
-            font-size: 32px; 
-            width: 80%; 
-            padding: 12px; 
-            text-align: center; 
-            border-radius: 12px; 
-            border: 2px solid #30363d; 
-            background: #0d1117; 
-            color: white; 
-            margin-bottom: 20px; 
-            outline: none; 
-        }
-        .btn-validar { 
-            background: #238636; 
-            color: white; 
-            padding: 18px; 
-            border: none; 
-            border-radius: 12px; 
-            font-weight: bold; 
-            font-size: 20px; 
-            cursor: pointer; 
-            width: 88%; 
-        }
-
-        #downloadArea { display: none; margin-top: 25px; border-top: 1px solid #30363d; padding-top: 25px; }
-        .btn-link { 
-            color: white; 
-            text-decoration: none; 
-            padding: 20px; 
-            display: block; 
-            border-radius: 15px; 
-            font-weight: bold; 
-            font-size: 18px; 
-            margin-bottom: 15px; 
-        }
-        .pelis { background-color: #e11d48; } 
-        .tv-futbol { background-color: #2563eb; } 
-        
-        .footer { margin-top: 25px; color: #8b949e; font-size: 13px; }
-    </style>
-</head>
-<body>
-
-    <div class="card">
-        <h1>MARTINTECH TV</h1>
-        <div class="status" id="status">Panel de Control - Benavidez</div>
-        
-        <div id="loginArea">
-            <input type="number" id="pinInput" placeholder="PIN" pattern="\d*">
-            <br>
-            <button class="btn-validar" id="btnValidar" onclick="validarAcceso()">INGRESAR</button>
-        </div>
-
-        <div id="downloadArea">
-            <p style="color: #3fb950; font-weight: bold; margin-bottom: 20px;">✅ ACCESO CONCEDIDO</p>
-            
-            <a href="https://movieplus-apk.com/MoviePlus10TVs.apk" class="btn-link pelis">🎬 MOVIE PLUS (Peliculas)</a>
-            <a href="https://bit.ly/tele-latino-tv" class="btn-link tv-futbol">⚽ TELE LATINO (TV y Fútbol)</a>
-        </div>
-
-        <div class="footer">
-            Soporte: 11 6968 9385
-        </div>
-    </div>
-
-    <script>
-        async function validarAcceso() {
-            const btn = document.getElementById("btnValidar");
-            const pinUsuario = document.getElementById("pinInput").value;
-            if(!pinUsuario) { alert("Ingresá el PIN."); return; }
-            btn.innerText = "VERIFICANDO...";
-            btn.disabled = true;
-
-            const urlRaw = "https://pastebin.com/raw/KEmQ0NjJ";
-            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(urlRaw + '?t=' + Date.now())}`;
-
-            try {
-                const response = await fetch(proxyUrl);
-                const data = await response.text();
-                if (pinUsuario.trim() === data.trim()) {
-                    document.getElementById("downloadArea").style.display = "block";
-                    document.getElementById("loginArea").style.display = "none";
-                } else {
-                    alert("PIN incorrecto.");
-                    btn.innerText = "INGRESAR";
-                    btn.disabled = false;
-                }
-            } catch (error) {
-                alert("Error de conexión.");
+                btn.innerText = "REINTENTAR";
                 btn.disabled = false;
             }
         }
