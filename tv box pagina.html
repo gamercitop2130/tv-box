@@ -3,35 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MartinTech TV - Acceso</title>
+    <title>MartinTech TV - Panel de Acceso</title>
     <style>
+        /* Estilo profesional para TV Box y PC */
         body { 
             background-color: #0b0f19; 
             color: white; 
-            font-family: 'Segoe UI', sans-serif; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
             text-align: center; 
-            padding-top: 10vh; 
+            padding-top: 8vh; 
             margin: 0; 
         }
         .card { 
             background: #161b22; 
             padding: 30px; 
-            border-radius: 20px; 
+            border-radius: 25px; 
             display: inline-block; 
             border: 2px solid #58a6ff; 
-            width: 85%; 
-            max-width: 400px; 
-            box-shadow: 0 10px 50px rgba(0,0,0,0.7); 
+            width: 90%; 
+            max-width: 420px; 
+            box-shadow: 0 10px 50px rgba(0,0,0,0.8); 
         }
-        h1 { color: #58a6ff; font-size: 28px; margin-bottom: 5px; }
+        h1 { color: #58a6ff; font-size: 28px; margin-bottom: 5px; text-transform: uppercase; }
         .status { color: #8b949e; font-size: 14px; margin-bottom: 25px; }
         
+        /* Input y Botón de entrada */
         input { 
             font-size: 32px; 
             width: 80%; 
-            padding: 10px; 
+            padding: 12px; 
             text-align: center; 
-            border-radius: 10px; 
+            border-radius: 12px; 
             border: 2px solid #30363d; 
             background: #0d1117; 
             color: white; 
@@ -39,36 +41,37 @@
             outline: none; 
         }
         input:focus { border-color: #58a6ff; }
-
-        .btn { 
+        .btn-validar { 
             background: #238636; 
             color: white; 
-            padding: 15px 40px; 
+            padding: 18px; 
             border: none; 
-            border-radius: 10px; 
+            border-radius: 12px; 
             font-weight: bold; 
             font-size: 20px; 
             cursor: pointer; 
-            width: 85%; 
+            width: 88%; 
+            transition: 0.2s;
         }
-        .btn:disabled { background: #215732; cursor: not-allowed; }
+        .btn-validar:active { transform: scale(0.95); }
 
-        #downloadArea { 
-            display: none; 
-            margin-top: 30px; 
-            border-top: 1px solid #30363d; 
-            padding-top: 25px; 
-        }
-        .btn-dl { 
-            background: #1f6feb; 
+        /* Área de descargas con botones de colores */
+        #downloadArea { display: none; margin-top: 25px; border-top: 1px solid #30363d; padding-top: 25px; }
+        .btn-link { 
             color: white; 
             text-decoration: none; 
             padding: 20px; 
             display: block; 
             border-radius: 15px; 
             font-weight: bold; 
-            font-size: 22px; 
+            font-size: 18px; 
+            margin-bottom: 15px; 
+            transition: 0.3s;
         }
+        .pelis { background-color: #e11d48; } /* Rojo */
+        .tv-futbol { background-color: #2563eb; } /* Azul */
+        .magis { background-color: #9333ea; } /* Morado */
+        
         .footer { margin-top: 25px; color: #8b949e; font-size: 13px; }
     </style>
 </head>
@@ -76,15 +79,22 @@
 
     <div class="card">
         <h1>MARTINTECH TV</h1>
-        <div class="status" id="status">Sistema de Nube Activo</div>
+        <div class="status" id="status">Panel de Control - Benavidez</div>
         
-        <input type="number" id="pinInput" placeholder="PIN" pattern="\d*">
-        <br>
-        <button class="btn" id="btnValidar" onclick="validarAcceso()">VALIDAR PIN</button>
+        <div id="loginArea">
+            <input type="number" id="pinInput" placeholder="PIN" pattern="\d*">
+            <br>
+            <button class="btn-validar" id="btnValidar" onclick="validarAcceso()">INGRESAR</button>
+        </div>
 
         <div id="downloadArea">
-            <p style="color: #3fb950; font-weight: bold; margin-bottom: 15px;">✅ ACCESO AUTORIZADO</p>
-            <a href="https://www.mediafire.com/tu_archivo_apk" class="btn-dl">📥 DESCARGAR APK</a>
+            <p style="color: #3fb950; font-weight: bold; margin-bottom: 20px;">✅ ACCESO CONCEDIDO</p>
+            
+            <a href="https://movieplus-apk.com/MoviePlus10TVs.apk" class="btn-link pelis">🎬 MOVIE PLUS (Peliculas)</a>
+            
+            <a href="https://bit.ly/tele-latino-tv" class="btn-link tv-futbol">⚽ TELE LATINO (TV y Fútbol)</a>
+            
+            <a href="https://cdn.magistv.video/magistv.apk" class="btn-link magis">📺 MAGIS TV (Opción 3)</a>
         </div>
 
         <div class="footer">
@@ -96,38 +106,34 @@
         async function validarAcceso() {
             const btn = document.getElementById("btnValidar");
             const pinUsuario = document.getElementById("pinInput").value;
-            const status = document.getElementById("status");
             
-            if(!pinUsuario) { alert("Poné el PIN, Martin."); return; }
+            if(!pinUsuario) { alert("Por favor, ingresá el PIN."); return; }
 
             btn.innerText = "VERIFICANDO...";
             btn.disabled = true;
 
-            // Tu link de Pastebin corregido
+            // Link de tu Pastebin
             const urlRaw = "https://pastebin.com/raw/KEmQ0NjJ";
             
-            // Bypass de CORS y Caché para que lea el PIN al instante
+            // Proxy para evitar bloqueos y caché
             const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(urlRaw + '?t=' + Date.now())}`;
 
             try {
                 const response = await fetch(proxyUrl);
-                if (!response.ok) throw new Error();
-                
                 const data = await response.text();
                 const pinCorrecto = data.trim();
 
                 if (pinUsuario.trim() === pinCorrecto) {
                     document.getElementById("downloadArea").style.display = "block";
-                    document.getElementById("pinInput").style.display = "none";
-                    btn.style.display = "none";
-                    status.innerText = "Sesión validada correctamente";
+                    document.getElementById("loginArea").style.display = "none";
+                    document.getElementById("status").innerText = "Sesión validada";
                 } else {
-                    alert("PIN incorrecto. Pedile el nuevo a Martin al 11 6968 9385.");
-                    btn.innerText = "VALIDAR PIN";
+                    alert("PIN incorrecto o vencido. Contactate con Martin.");
+                    btn.innerText = "INGRESAR";
                     btn.disabled = false;
                 }
             } catch (error) {
-                alert("Error de conexión con la nube. Reintentá en un momento.");
+                alert("Error de conexión. Intentá de nuevo.");
                 btn.innerText = "REINTENTAR";
                 btn.disabled = false;
             }
