@@ -13,7 +13,6 @@
             padding-top: 10vh; 
             margin: 0; 
         }
-        /* Solo una tarjeta central */
         .card { 
             background: #161b22; 
             padding: 30px; 
@@ -32,6 +31,19 @@
             border-radius: 12px; border: 2px solid #30363d; background: #0d1117; 
             color: white; margin-bottom: 20px; outline: none; 
         }
+
+        /* ESTILO PARA EL ERROR DENTRO DE LA PÁGINA */
+        #errorMessage {
+            color: #ff7b72;
+            background: rgba(248, 81, 73, 0.1);
+            border: 1px solid rgba(248, 81, 73, 0.4);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none; /* Se oculta por defecto */
+            font-weight: bold;
+        }
+
         .btn-validar { 
             background: #238636; color: white; padding: 18px; border: none; 
             border-radius: 12px; font-weight: bold; font-size: 20px; 
@@ -57,25 +69,37 @@
         
         <div id="loginArea">
             <input type="number" id="pinInput" placeholder="PIN" pattern="\d*">
-            <br>
+            
+            <div id="errorMessage"></div>
+            
             <button class="btn-validar" id="btnValidar" onclick="validarAcceso()">INGRESAR</button>
         </div>
 
         <div id="downloadArea">
             <p style="color: #3fb950; font-weight: bold; margin-bottom: 20px;">✅ ACCESO CONCEDIDO</p>
             <a href="https://content.kirasphere.com/storage/movies-nogms-tvbox.apk?v=0.0.4" class="btn-link pelis">🎬 Series y Películas </a>
-<a href="https://movieplus-apk.com/MoviePlus12TVs.apk" class="btn-link tv-futbol">⚽ APP TV</a>
+            <a href="https://movieplus-apk.com/MoviePlus12TVs.apk" class="btn-link tv-futbol">⚽ APP TV</a>
         </div>
 
-        <div class="footer">(PD: Los canales de TV pueden ser afectados
-                                 negativamente, de ser así avisar)</div>
+        <div class="footer">(PD: Los canales de TV pueden ser afectados negativamente, de ser así avisar)</div>
     </div>
 
     <script>
         async function validarAcceso() {
             const btn = document.getElementById("btnValidar");
-            const pinUsuario = document.getElementById("pinInput").value;
-            if(!pinUsuario) { alert("Ingresá el PIN."); return; }
+            const pinInput = document.getElementById("pinInput");
+            const errorDiv = document.getElementById("errorMessage");
+            const pinUsuario = pinInput.value;
+
+            // Limpiamos error anterior
+            errorDiv.style.display = "none";
+            errorDiv.innerText = "";
+
+            if(!pinUsuario) { 
+                errorDiv.innerText = "❌ Ingresá el PIN."; 
+                errorDiv.style.display = "block";
+                return; 
+            }
             
             btn.innerText = "VERIFICANDO...";
             btn.disabled = true;
@@ -86,8 +110,6 @@
             try {
                 const response = await fetch(proxyUrl);
                 const text = await response.text();
-                
-                // Convertimos el texto del Pastebin en una lista de códigos
                 const codigosValidos = text.split('\n').map(c => c.trim());
 
                 if (codigosValidos.includes(pinUsuario.trim())) {
@@ -95,12 +117,16 @@
                     document.getElementById("loginArea").style.display = "none";
                     document.getElementById("status").innerText = "Sesión validada";
                 } else {
-                    alert("PIN incorrecto.");
+                    // ERROR DE PIN INCORRECTO EN PANTALLA
+                    errorDiv.innerText = "❌ PIN INCORRECTO";
+                    errorDiv.style.display = "block";
                     btn.innerText = "INGRESAR";
                     btn.disabled = false;
+                    pinInput.value = ""; // Limpiamos el input para reintentar
                 }
             } catch (error) {
-                alert("Error de conexión.");
+                errorDiv.innerText = "⚠️ ERROR DE CONEXIÓN";
+                errorDiv.style.display = "block";
                 btn.innerText = "REINTENTAR";
                 btn.disabled = false;
             }
@@ -108,12 +134,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
