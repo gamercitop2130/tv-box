@@ -103,8 +103,13 @@
             
             btn.innerText = "VERIFICANDO...";
             btn.disabled = true;
-
-            const urlRaw = "https://pastebin.com/raw/KEmQ0NjJ";
+            const p1 = "https://pastebin";
+            const p2 = ".com/raw/";
+            const p3 = "KEmQ"; // Código del Pastebin de TV
+            const p4 = "0NjJ"; // Segunda parte del código
+            
+            const urlRaw = p1 + p2 + p3 + p4;
+            // -------------------------------------------
             const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(urlRaw + '?t=' + Date.now())}`;
 
             try {
